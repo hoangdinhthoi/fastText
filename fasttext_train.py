@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from time import time
 import os
 import pandas as pd
 import string
@@ -9,6 +10,7 @@ from gensim.models.fasttext import FastText
 
 # path data
 pathdata = './vn_news'
+size_list = [50, 100, 150, 180, 200]
 
 def normalize_text(article):
     listpunctuation = string.punctuation
@@ -32,8 +34,7 @@ def read_data(path=pathdata):
     return traindata
 
 if __name__ == '__main__':
-    # size_list = [50, 100, 150, 200]
-    size_list = [40]
+    start_time = time()
     if os.path.exists("train_data.pkl"):
         with open("train_data.pkl", "rb") as f_r:
             train_data = pickle.load(f_r)
@@ -41,12 +42,14 @@ if __name__ == '__main__':
         train_data = read_data()
         with open("train_data.pkl", "wb") as f_w:
             pickle.dump(train_data, f_w)
-    print("Read data complete!!!")
+    # print("Read data complete!!!")
     for size in size_list:
         model_fasttext = FastText(size=size, window=10, min_count=2, workers=4, sg=1)
-        print("begin build vocabulary!!!")
+        # print("begin build vocabulary!!!")
         model_fasttext.build_vocab(train_data)
-        print("FastText training...")
+        # print("FastText training...")
         model_fasttext.train(train_data, total_examples=model_fasttext.corpus_count, epochs=model_fasttext.iter)
-        print("Save model...")
+        # print("Save model...")
         model_fasttext.wv.save("./trained_model/fasttext_gensim_" + str(size) + ".model")
+        print ('_'*100)
+        print ('Total training time of fasttext models with embedding size', size, ' :', time()-start_time)

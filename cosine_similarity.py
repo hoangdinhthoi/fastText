@@ -4,8 +4,9 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.distance import cosine
 from tqdm import tqdm
+from fasttext_train import size_list
 
-size_list = [50, 100, 150, 200]
+
 path_visim = './validate_data/Visim-400.txt'
 data = pd.read_csv(path_visim, sep="\t")
 list_words = list(data["Word1"]) + list(data["Word2"])

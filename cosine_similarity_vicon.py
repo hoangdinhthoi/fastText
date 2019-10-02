@@ -5,6 +5,7 @@ import pandas as pd
 from scipy.spatial.distance import cosine
 from tqdm import tqdm
 import os
+from fasttext_train import size_list
 
 
 def cosin_similarity(word1, word2, word_vector_reduced):
@@ -12,7 +13,6 @@ def cosin_similarity(word1, word2, word_vector_reduced):
         vec_word2 = word_vector_reduced[word2]
         return (2 - cosine(vec_word1, vec_word2))*5
 
-size_list = [50, 100, 150, 200]
 path_vicon_list = os.listdir('./validate_data')
 path_vicon_list.remove('Visim-400.txt')
 path_vicon_list = [os.path.join('./validate_data', p) for p in path_vicon_list]
